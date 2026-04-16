@@ -12,7 +12,8 @@ class TransOrderDetailController extends Controller
      */
     public function index()
     {
-        //
+        $orderDetails = TransOrderDetail::with(['order.customer', 'service'])->latest()->get();
+        return view('operator.order_details.index', compact('orderDetails'));
     }
 
     /**

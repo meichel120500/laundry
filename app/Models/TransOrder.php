@@ -21,6 +21,7 @@ class TransOrder extends Model
         'order_qty',
         'order_pay',
         'order_change',
+        'tax',
         'total'
     ];
 
@@ -40,5 +41,13 @@ class TransOrder extends Model
     {
         // Pastikan di database nama kolomnya adalah id_service
         return $this->belongsTo(TypeOfService::class, 'id_service');
+    }
+
+    /**
+     * Relasi ke tabel TransOrderDetail
+     */
+    public function details()
+    {
+        return $this->hasMany(TransOrderDetail::class, 'id_order');
     }
 }

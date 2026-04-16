@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - SI Laundry</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
@@ -25,8 +26,9 @@
 
         @if (Auth::user()->id_level == 2)
         <small class="px-3 text-secondary">Transaksi</small>
+        <a href="{{ route('operator.customers.index') }}">Data Pelanggan</a>
         <a href="{{ route('orders.index') }}">Orders Baru</a>
-        <a href="{{ route('pickups.index') }}">Pengambalian</a>
+        <a href="{{ route('pickups.index') }}">Pengambilan</a>
         @endif
 
         @if(Auth::user()->id_level == 3)

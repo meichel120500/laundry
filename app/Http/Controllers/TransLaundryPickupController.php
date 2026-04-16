@@ -12,8 +12,8 @@ class TransLaundryPickupController extends Controller
      */
     public function index()
     {
-        // Ambil order yang statusnya masih 1 (Proses)
-        $orders = TransOrder::with('customer', 'service')->where('order_status', 1)->get();
+        // Ambil order yang statusnya masih 0 (Baru)
+        $orders = TransOrder::with(['customer', 'service', 'details.service'])->where('order_status', 0)->get();
         return view('operator.pickups.index', compact('orders'));
     }
 
@@ -37,7 +37,7 @@ class TransLaundryPickupController extends Controller
         // Simpan pembayaran dan hitung kembalian
         $order->order_pay    = $request->order_pay;
         $order->order_change = $request->order_pay - $order->total;
-        $order->order_status = 2; // 2 = Selesai / Sudah Diambil
+        $order->order_status = 1; // 1 = Sudah Diambil
         $order->save();
 
         return redirect()->route('pickups.index')
@@ -52,7 +52,7 @@ class TransLaundryPickupController extends Controller
         $order = TransOrder::find($id);
 
         if ($order) {
-            $order->order_status = 2;
+            $order->order_status = 1; // 1 = Sudah Diambil
             $order->save();
             return back()->with('success', 'Pakaian telah berhasil diambil!');
         }

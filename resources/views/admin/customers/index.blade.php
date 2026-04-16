@@ -35,6 +35,7 @@
                             <td>{{ $item->phone }}</td>
                             <td>{{ $item->customer_address }}</td>
                             <td>
+                                @if(Auth::user()->id_level == 1)
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEdit{{ $item->id }}">
                                     Edit
                                 </button>
@@ -44,6 +45,9 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</button>
                                 </form>
+                                @else
+                                <span class="badge bg-secondary">Akses Terbatas</span>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

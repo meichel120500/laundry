@@ -27,15 +27,17 @@
                         <td>{{ $item->order_qty ?? '-' }} Kg</td>
                         <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>
                         <td>
-                            <span class="badge {{ $item->order_status == 1 ? 'bg-warning' : 'bg-success' }}">
-                                {{ $item->order_status == 1 ? 'Proses' : 'Selesai' }}
+                            <span class="badge {{ $item->order_status == 0 ? 'bg-warning' : 'bg-success' }}">
+                                {{ $item->order_status == 0 ? 'Baru' : 'Sudah Diambil' }}
                             </span>
                         </td>
                     </tr>
+
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+</div>
 </div>
 @endsection

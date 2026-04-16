@@ -73,4 +73,23 @@ class CustomerController extends Controller
         $customer->delete();
         return redirect()->route('customers.index')->with('success','Data Berhasil Dihapus');
     }
+
+    /**
+     * Store a newly created customer via AJAX
+     */
+    public function storeAjax(Request $request)
+    {
+        $request->validate([
+            'customer_name' => 'required',
+            'phone' => 'required',
+            'customer_address' => 'required',
+        ]);
+
+        $customer = Customer::create($request->all());
+
+        return response()->json([
+            'success' => true,
+            'customer' => $customer
+        ]);
+    }
 }

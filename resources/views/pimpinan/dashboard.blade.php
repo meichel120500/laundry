@@ -9,24 +9,18 @@
                     <h3>Halo, {{ Auth::user()->name }}!</h3>
                     <p>Anda login sebagai: <strong>{{ Auth::user()->level->level_name }}</strong></p>
                     <hr>
-                    <div class="row text-center mt-4">
-                        <div class="col-md-4">
-                            <div class="p-3 bg-primary text-white rounded">
-                                <h5>Total Customers</h5>
-                                <h2>120</h2>
+                    <div class="row text-center mt-4 justify-content-center">
+                        <div class="col-md-5">
+                            <div class="p-4 bg-primary text-white rounded shadow-sm">
+                                <h5><i class="bi bi-people"></i> Total Customers</h5>
+                                <h2>{{ $totalCustomer }}</h2>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="p-3 bg-primary text-white rounded">
-                                <h5>Transaksi Hari Ini</h5>
-                                <h2>15</h2>
+                        <div class="col-md-5">
+                            <div class="p-4 bg-success text-white rounded shadow-sm">
+                                <h5><i class="bi bi-cart-check"></i> Transaksi Hari Ini</h5>
+                                <h2>{{ $transaksiHariIni }}</h2>
                              </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="p-3 bg-primary text-white rounded">
-                                <h5>Pakaian Belum Ambil</h5>
-                                <h2>5</h2>
-                            </div>
                         </div>
                     </div>       
                 </div>
