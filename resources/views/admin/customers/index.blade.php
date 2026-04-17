@@ -68,26 +68,66 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Nama Customer</label>
-                        <input type="text" name="customer_name" class="form-control" placeholder="Masukkan nama..." required>
+                        <label class="form-label fw-bold">Tipe Pelanggan</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="customer_type_modal" id="tipeMemberData" value="member" checked onchange="toggleForm(this.value)">
+                                <label class="form-check-label" for="tipeMemberData">Pelanggan Member</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="customer_type_modal" id="tipeNonMemberData" value="non_member" onchange="toggleForm(this.value)">
+                                <label class="form-check-label" for="tipeNonMemberData">Bukan Member</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">No. Telp</label>
-                        <input type="text" name="phone" class="form-control" placeholder="08xxxx" required>
+
+                    <div id="formPelangganArea">
+                        <div class="mb-3">
+                            <label class="form-label">Nama Customer</label>
+                            <input type="text" name="customer_name" id="modalDataName" class="form-control" placeholder="Masukkan nama..." required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">No. Telp</label>
+                            <input type="text" name="phone" id="modalDataPhone" class="form-control" placeholder="08xxxx" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Alamat</label>
+                            <textarea name="customer_address" id="modalDataAddress" class="form-control" rows="3" placeholder="Alamat lengkap..." required></textarea>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Alamat</label>
-                        <textarea name="customer_address" class="form-control" rows="3" placeholder="Alamat lengkap..." required></textarea>
+                    <div id="nonMemberAlert" class="alert alert-warning d-none">
+                        Data pelanggan <b>Bukan Member</b> tidak perlu disimpan ke dalam Data Pelanggan. Silakan masukkan data mereka langsung di menu <b>Order Baru / Transaksi</b>.
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan Data</button>
+                    <button type="submit" class="btn btn-primary" id="btnSimpanDataModal">Simpan Data</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+function toggleForm(value) {
+    if(value === 'member') {
+        document.getElementById('formPelangganArea').classList.remove('d-none');
+        document.getElementById('nonMemberAlert').classList.add('d-none');
+        document.getElementById('btnSimpanDataModal').classList.remove('d-none');
+        document.getElementById('modalDataName').setAttribute('required', 'required');
+        document.getElementById('modalDataPhone').setAttribute('required', 'required');
+        document.getElementById('modalDataAddress').setAttribute('required', 'required');
+    } else {
+        document.getElementById('formPelangganArea').classList.add('d-none');
+        document.getElementById('nonMemberAlert').classList.remove('d-none');
+        document.getElementById('btnSimpanDataModal').classList.add('d-none');
+        document.getElementById('modalDataName').removeAttribute('required');
+        document.getElementById('modalDataPhone').removeAttribute('required');
+        document.getElementById('modalDataAddress').removeAttribute('required');
+    }
+}
+</script>
+
 
 @foreach ($customers as $item)
 <div class="modal fade" id="modalEdit{{ $item->id }}" tabindex="-1" aria-hidden="true">

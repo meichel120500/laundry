@@ -37,10 +37,18 @@ class TransLaundryPickupController extends Controller
         // Simpan pembayaran dan hitung kembalian
         $order->order_pay    = $request->order_pay;
         $order->order_change = $request->order_pay - $order->total;
-        $order->order_status = 1; // 1 = Sudah Diambil
+        $order->order_status = 1; // 1 = Selesai/Diambil
         $order->save();
 
-        return redirect()->route('pickups.index')
+        // Rekam pengambilan
+        \App\Models\TransLaundryPickup::create([
+            'id_order'    => $order->id,
+            'id_customer' => $order->id_customer, // Bisa Null jika non member
+            'pickup_date' => now(),
+            'notes'       => 'Selesai: Rp ' . number_format($request->order_pay, 0, ',', '.')
+        ]);
+
+        return redirect()->route('pickups.print', $order->id)
                          ->with('success', 'Pembayaran berhasil! Kembalian: Rp ' . number_format($order->order_change, 0, ',', '.'));
     }
 
@@ -58,5 +66,14 @@ class TransLaundryPickupController extends Controller
         }
 
         return back()->with('error', 'Data tidak ditemukan.');
+    }
+
+    /**
+     * Tampilkan dan cetak struk
+     */
+    public function print_receipt($id)
+    {
+        $order = TransOrder::with(['customer', 'service', 'details.service'])->findOrFail($id);
+        return view('operator.pickups.print', compact('order'));
     }
 }

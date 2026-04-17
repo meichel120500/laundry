@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('customers', CustomerController::class);
         Route::resource('services', TypeOfServiceController::class);
+        Route::resource('vouchers', \App\Http\Controllers\VoucherController::class);
     });
 
    
@@ -58,10 +59,13 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('pickups', TransLaundryPickupController::class);
         Route::get('/pickups/update-status/{id}', [TransLaundryPickupController::class, 'updateStatus'])->name('pickups.updateStatus');
         Route::post('/pickups/bayar', [TransLaundryPickupController::class, 'bayar'])->name('pickups.bayar');
+        Route::get('/pickups/print/{id}', [TransLaundryPickupController::class, 'print_receipt'])->name('pickups.print');
 
         // Customer Feature for Operator
         Route::get('customers', [CustomerController::class, 'index'])->name('operator.customers.index');
         Route::post('customers/ajax', [CustomerController::class, 'storeAjax'])->name('operator.customers.storeAjax');
+        Route::post('validate-voucher', [\App\Http\Controllers\VoucherController::class, 'checkAjax'])->name('operator.validateVoucher');
+        Route::get('check-customer-first-time/{id}', [\App\Http\Controllers\TransOrderController::class, 'checkFirstTime'])->name('operator.checkFirstTime');
     });
 
     

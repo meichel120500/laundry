@@ -24,7 +24,7 @@
                     @foreach($orders as $item)
                     <tr>
                         <td>TRX-{{ $item->id }}</td>
-                        <td>{{ $item->customer->customer_name }}</td>
+                        <td>{{ $item->customer ? $item->customer->customer_name : $item->customer_name_non_member . ' (Bukan Member)' }}</td>
                         <td>
                             <ul class="mb-0 ps-3">
                                 @if($item->details->isEmpty())
@@ -44,7 +44,7 @@
                                 data-bs-target="#modalBayar"
                                 data-id="{{ $item->id }}"
                                 data-total="{{ $item->total }}"
-                                data-nama="{{ $item->customer->customer_name }}">
+                                data-nama="{{ $item->customer ? $item->customer->customer_name : $item->customer_name_non_member . ' (Bukan Member)' }}">
                                 <i class="bi bi-cash-coin"></i> Bayar & Ambil
                             </button>
                         </td>

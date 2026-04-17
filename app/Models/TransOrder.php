@@ -13,6 +13,10 @@ class TransOrder extends Model
 
     protected $fillable = [
         'id_customer',
+        'customer_name_non_member',
+        'customer_phone_non_member',
+        'voucher_id',
+        'discount',
         'id_service',
         'order_code',
         'order_date',
@@ -49,5 +53,13 @@ class TransOrder extends Model
     public function details()
     {
         return $this->hasMany(TransOrderDetail::class, 'id_order');
+    }
+
+    /**
+     * Relasi ke tabel Voucher
+     */
+    public function voucher()
+    {
+        return $this->belongsTo(Voucher::class, 'voucher_id');
     }
 }

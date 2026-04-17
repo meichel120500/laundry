@@ -22,7 +22,7 @@
                     @foreach($orders as $item)
                     <tr>
                         <td>TRX-{{ $item->id }}</td>
-                        <td>{{ $item->customer->customer_name }}</td>
+                        <td>{{ $item->customer ? $item->customer->customer_name : $item->customer_name_non_member . ' (Bukan Member)' }}</td>
                         <td>{{ $item->service->service_name ?? 'Layanan tidak ditemukan' }}</td>
                         <td>{{ $item->order_qty ?? '-' }} Kg</td>
                         <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>

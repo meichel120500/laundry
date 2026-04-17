@@ -21,6 +21,7 @@
         <a href="{{ route('customers.index') }}">Data Customers</a>
         <a href="{{ route('users.index') }}">Data User</a>
         <a href="{{ route('services.index') }}">Jenis Service</a>
+        <a href="{{ route('vouchers.index') }}">Data Voucher</a>
         @endif
 
 

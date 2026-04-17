@@ -26,15 +26,33 @@ class TransOrderController extends Controller
         return view('operator.orders.create', compact('customers', 'services'));
     }
 
+    // Cek apakah customer adalah member pertama kali (belum ada transaksi sama sekali)
+    public function checkFirstTime($id)
+    {
+        $hasOrder = TransOrder::where('id_customer', $id)->exists();
+        return response()->json([
+            'is_first_time' => !$hasOrder
+        ]);
+    }
+
     // Simpan Transaksi
     public function store(Request $request)
     {
         $request->validate([
-            'customer_id' => 'required',
+            'customer_type' => 'required',
             'items'       => 'required|array|min:1',
             'items.*.id_service' => 'required',
             'items.*.qty' => 'required|numeric|min:0.1',
         ]);
+
+        if($request->customer_type == 'member') {
+            $request->validate(['customer_id' => 'required']);
+        } else {
+            $request->validate([
+                'customer_name_non_member' => 'required|string|max:100',
+                'customer_phone_non_member' => 'required|string|max:15',
+            ]);
+        }
 
         $totalSubtotal = 0;
         $totalQty = 0;
@@ -59,25 +77,43 @@ class TransOrderController extends Controller
         }
 
         $pajak = $totalSubtotal * 0.1;
-        $totalAkhir = $totalSubtotal + $pajak;
+        $nominalDiskon = $request->calculated_discount ?? 0;
+        $totalAkhir = ($totalSubtotal + $pajak) - $nominalDiskon;
 
         // Ambil services pertama untuk diisi ke `id_service` parent table
         // agar tidak null (demi kompatibilitas yang lama)
         $firstService = $request->items[0]['id_service'];
 
-        $order = TransOrder::create([
-            'id_customer'    => $request->customer_id,
+        $dataOrder = [
             'id_service'     => $firstService,
             'order_code'     => 'TRX-' . time(),
             'order_date'     => now(),
             'order_end_date' => now()->addDays(2),
             'order_status'   => 0, // 0 = Baru
-            'order_qty'      => $totalQty,  // Simpan total berat (kg)
+            'order_qty'      => $totalQty,
             'order_pay'      => 0,
             'order_change'   => 0,
             'tax'            => $pajak,
+            'discount'       => $nominalDiskon,
             'total'          => $totalAkhir,
-        ]);
+        ];
+
+        if ($request->customer_type == 'member') {
+            $dataOrder['id_customer'] = $request->customer_id;
+            if ($request->voucher_id) {
+                // Pastikan member belum pernah pakai kode voucher ini sebelumnya
+                $used = TransOrder::where('id_customer', $request->customer_id)
+                                  ->where('voucher_id', $request->voucher_id)->exists();
+                if(!$used) {
+                    $dataOrder['voucher_id'] = $request->voucher_id;
+                }
+            }
+        } else {
+            $dataOrder['customer_name_non_member'] = $request->customer_name_non_member;
+            $dataOrder['customer_phone_non_member'] = $request->customer_phone_non_member;
+        }
+
+        $order = TransOrder::create($dataOrder);
 
         // Simpan setiap detail ke databse
         foreach($orderDetails as $detail) {
