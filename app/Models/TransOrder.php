@@ -25,6 +25,7 @@ class TransOrder extends Model
         'order_qty',
         'order_pay',
         'order_change',
+        'payment_status',
         'tax',
         'total'
     ];

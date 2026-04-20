@@ -15,7 +15,8 @@
                         <th>Layanan</th>
                         <th>Berat (Kg)</th>
                         <th>Total Harga</th>
-                        <th>Status</th>
+                        <th>Status Order</th>
+                        <th>Status Bayar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,8 +28,13 @@
                         <td>{{ $item->order_qty ?? '-' }} Kg</td>
                         <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>
                         <td>
-                            <span class="badge {{ $item->order_status == 0 ? 'bg-warning' : 'bg-success' }}">
-                                {{ $item->order_status == 0 ? 'Baru' : 'Sudah Diambil' }}
+                            <span class="badge {{ $item->order_status == 0 ? 'bg-info' : 'bg-success' }}">
+                                {{ $item->order_status == 0 ? 'Sedang Diproses' : 'Sudah Diambil' }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge {{ $item->payment_status == 0 ? 'bg-danger' : 'bg-success' }}">
+                                {{ $item->payment_status == 0 ? 'Belum Lunas' : 'Lunas' }}
                             </span>
                         </td>
                     </tr>

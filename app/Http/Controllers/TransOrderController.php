@@ -88,7 +88,7 @@ class TransOrderController extends Controller
             'id_service'     => $firstService,
             'order_code'     => 'TRX-' . time(),
             'order_date'     => now(),
-            'order_end_date' => now()->addDays(2),
+            'order_end_date' => $request->order_end_date ?? now()->addDays(2),
             'order_status'   => 0, // 0 = Baru
             'order_qty'      => $totalQty,
             'order_pay'      => 0,

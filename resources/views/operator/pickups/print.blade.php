@@ -17,7 +17,7 @@
         @media print {
             body { padding: 0; }
             .receipt-container { border: none; padding: 0; }
-            .no-print { display: none; }
+            .no-print { display: none !important; }
         }
         .btn-print { display: block; width: 100%; max-width: 400px; margin: 20px auto; padding: 10px; text-align: center; background: #0d6efd; color: white; text-decoration: none; border: none; font-size: 16px; cursor: pointer; border-radius: 5px; }
         .btn-back { display: block; width: 100%; max-width: 400px; margin: 10px auto; text-align: center; padding: 10px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; }
@@ -92,7 +92,7 @@
         <div class="divider"></div>
         
         <div class="text-center" style="margin-top: 15px;">
-            <p><strong>LUNAS & SUDAH DIAMBIL</strong></p>
+            <p><strong>LUNAS & {{ $order->order_status == 1 ? 'SUDAH DIAMBIL' : 'BELUM DIAMBIL' }}.</strong></p>
             <p style="font-size: 12px;">Terima kasih telah mempercayakan pakaian Anda di Laundry Kami.</p>
             <p style="font-size: 12px; margin-top: 10px;">Dicetak: {{ now()->format('d/m/Y H:i:s') }}</p>
         </div>

@@ -71,6 +71,12 @@
                     <!-- Indicator -->
                     <input type="hidden" id="is_new_member" name="is_new_member" value="0">
 
+                    <div class="mb-4">
+                        <label class="fw-bold"><i class="bi bi-calendar-check"></i> Perkiraan Selesai</label>
+                        <input type="date" name="order_end_date" id="order_end_date" class="form-control" value="{{ date('Y-m-d', strtotime('+2 days')) }}" required>
+                        <small class="text-muted">Default: 2 hari dari sekarang.</small>
+                    </div>
+
                     <!-- Area Tambah Layanan Sementara -->
                     <div class="card bg-light mb-4 border-0 shadow-sm rounded-3">
                         <div class="card-body p-4">

@@ -17,6 +17,7 @@
                         <th>Pelanggan</th>
                         <th>Layanan / Detail Pesanan</th>
                         <th>Total Bayar</th>
+                        <th>Status Pembayaran</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -38,15 +39,27 @@
                         </td>
                         <td><strong>Rp {{ number_format($item->total, 0, ',', '.') }}</strong></td>
                         <td>
-                            
-                            <button class="btn btn-success btn-sm"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalBayar"
-                                data-id="{{ $item->id }}"
-                                data-total="{{ $item->total }}"
-                                data-nama="{{ $item->customer ? $item->customer->customer_name : $item->customer_name_non_member . ' (Bukan Member)' }}">
-                                <i class="bi bi-cash-coin"></i> Bayar & Ambil
-                            </button>
+                            @if($item->payment_status == 0)
+                                <span class="badge bg-danger">Belum Bayar</span>
+                            @else
+                                <span class="badge bg-success">Sudah Bayar</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($item->payment_status == 0)
+                                <button class="btn btn-success btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalBayar"
+                                    data-id="{{ $item->id }}"
+                                    data-total="{{ $item->total }}"
+                                    data-nama="{{ $item->customer ? $item->customer->customer_name : $item->customer_name_non_member . ' (Bukan Member)' }}">
+                                    <i class="bi bi-cash-coin"></i> Bayar
+                                </button>
+                            @else
+                                <a href="{{ route('pickups.updateStatus', $item->id) }}" class="btn btn-primary btn-sm" onclick="return confirm('Apakah barang benar-benar sudah diambil oleh pelanggan?')">
+                                    <i class="bi bi-box-seam"></i> Ambil Barang
+                                </a>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -83,10 +96,14 @@
                         <label class="form-label fw-bold">Kembalian</label>
                         <input type="text" id="modal_kembalian" class="form-control fw-bold text-success" readonly>
                     </div>
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" name="ambil_barang" id="ambil_barang" checked>
+                      <label class="form-check-label fw-bold" for="ambil_barang">Langsung ambil barang?</label>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check-circle-fill"></i> Konfirmasi & Simpan</button>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-check-circle-fill"></i> Proses Pembayaran</button>
                 </div>
             </form>
         </div>
