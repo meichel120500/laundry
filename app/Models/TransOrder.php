@@ -13,7 +13,6 @@ class TransOrder extends Model
 
     protected $fillable = [
         'id_customer',
-        'id_service',
         'order_code',
         'order_date',
         'order_end_date',
@@ -21,6 +20,7 @@ class TransOrder extends Model
         'order_qty',
         'order_pay',
         'order_change',
+        'payment_status',
         'tax',
         'total'
     ];
@@ -31,16 +31,6 @@ class TransOrder extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'id_customer');
-    }
-
-    /**
-     * Relasi ke tabel TypeOfService
-     * Ini yang tadi bikin error karena belum dibuat
-     */
-    public function service()
-    {
-        // Pastikan di database nama kolomnya adalah id_service
-        return $this->belongsTo(TypeOfService::class, 'id_service');
     }
 
     /**

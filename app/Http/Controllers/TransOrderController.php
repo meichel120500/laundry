@@ -14,7 +14,7 @@ class TransOrderController extends Controller
     // Tampil Daftar Transaksi
     public function index() {
         // Eager loading customer dan service agar performa cepat
-        $orders = TransOrder::with(['customer', 'service', 'details'])->latest()->get();
+        $orders = TransOrder::with(['customer', /* 'service', */ 'details'])->latest()->get();
         $services = TypeOfService::all();
         return view('operator.orders.index', compact('orders', 'services'));
     }
@@ -58,8 +58,8 @@ class TransOrderController extends Controller
             ];
         }
 
-        $pajak = $totalSubtotal * 0.1;
-        $totalAkhir = $totalSubtotal + $pajak;
+        // $pajak = $totalSubtotal * 0.1;
+        $totalAkhir = $totalSubtotal;
 
         // Ambil services pertama untuk diisi ke `id_service` parent table
         // agar tidak null (demi kompatibilitas yang lama)
@@ -67,7 +67,7 @@ class TransOrderController extends Controller
 
         $order = TransOrder::create([
             'id_customer'    => $request->customer_id,
-            'id_service'     => $firstService,
+            // 'id_service'     => $firstService,
             'order_code'     => 'TRX-' . time(),
             'order_date'     => now(),
             'order_end_date' => now()->addDays(2),
@@ -75,7 +75,7 @@ class TransOrderController extends Controller
             'order_qty'      => $totalQty,  // Simpan total berat (kg)
             'order_pay'      => 0,
             'order_change'   => 0,
-            'tax'            => $pajak,
+            // 'tax'            => $pajak,
             'total'          => $totalAkhir,
         ]);
 
@@ -108,8 +108,8 @@ class TransOrderController extends Controller
         $price = $service->price; 
         $qty = $request->qty;
         $subtotal = $price * $qty;
-        $pajak = $subtotal * 0.1;
-        $totalAkhir = $subtotal + $pajak;
+        // $pajak = $subtotal * 0.1;
+        $totalAkhir = $subtotal; // + $pajak;
 
         TransOrderDetail::create([
             'id_order'   => $order->id,
@@ -121,7 +121,7 @@ class TransOrderController extends Controller
 
         // Update TransOrder total, qty, dan tax
         $order->total += $totalAkhir;
-        $order->tax += $pajak;
+        // $order->tax += $pajak;
         $order->order_qty += $qty;
         $order->save();
 
@@ -131,7 +131,7 @@ class TransOrderController extends Controller
     // Laporan Penjualan untuk Pimpinan
     public function report()
     {
-        $orders = TransOrder::with(['customer', 'service'])->latest()->get();
+        $orders = TransOrder::with(['customer', /* 'service' */])->latest()->get();
         // Menghitung total penjualan
         $totalPenjualan = $orders->sum('total');
         

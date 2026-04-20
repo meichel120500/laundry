@@ -71,11 +71,11 @@
                                 <!-- Item dimasukkan lewat Javascript -->
                             </tbody>
                             <tfoot>
-                                <tr>
+                                <!-- <tr>
                                     <td colspan="3" class="text-end text-muted">Pajak Tambahan (10%)</td>
                                     <td id="tax_display" class="text-end text-danger">Rp 0</td>
                                     <td></td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td colspan="3" class="text-end fw-bold fs-5">TOTAL TAGIHAN</td>
                                     <td id="total_display" class="text-end fw-bold text-success fs-5">Rp 0</td>
@@ -155,10 +155,10 @@
             tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Belum ada pesanan layanan yang dimasukkan.</td></tr>';
         }
 
-        const tax = totalSubtotal * 0.1;
-        const totalAkhir = totalSubtotal + tax;
+        // const tax = totalSubtotal * 0.1;
+        const totalAkhir = totalSubtotal;
 
-        document.getElementById('tax_display').innerText = 'Rp ' + tax.toLocaleString('id-ID');
+        // document.getElementById('tax_display').innerText = 'Rp ' + tax.toLocaleString('id-ID');
         document.getElementById('total_display').innerText = 'Rp ' + totalAkhir.toLocaleString('id-ID');
     }
 

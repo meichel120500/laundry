@@ -29,7 +29,10 @@
                             <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d M Y H:i') }}</td>
                             <td>{{ $order->order_code ?? ('TRX-'.$order->id) }}</td>
                             <td>{{ $order->customer->customer_name ?? '-' }}</td>
-                            <td>{{ $order->service->service_name ?? '-' }}</td>
+                            <td>
+                                {{-- {{ $order->service->service_name ?? '-' }} --}}
+                                {{ $order->details->pluck('service.service_name')->join(', ') }}
+                            </td>
                             <td>
                                 <span class="badge {{ $order->order_status == 0 ? 'bg-warning' : 'bg-success' }}">
                                     {{ $order->order_status == 0 ? 'Baru' : 'Sudah Diambil' }}

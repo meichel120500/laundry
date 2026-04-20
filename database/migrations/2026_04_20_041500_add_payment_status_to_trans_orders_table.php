@@ -6,19 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('trans_orders', function (Blueprint $table) {
-            // Tambah kolom berat (kg) setelah order_status
-            $table->decimal('order_qty', 8, 2)->default(0)->after('order_status');
+            // Tambahkan kolom status pembayaran: 0 = Belum Bayar, 1 = Sudah Bayar
+            $table->tinyInteger('payment_status')->default(0)->after('order_status');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('trans_orders', function (Blueprint $table) {
-            $table->dropColumn('order_qty');
+            $table->dropColumn('payment_status');
         });
     }
 };
-

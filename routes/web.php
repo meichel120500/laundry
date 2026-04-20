@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('customers', CustomerController::class);
         Route::resource('services', TypeOfServiceController::class);
+
     });
 
    
