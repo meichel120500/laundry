@@ -27,7 +27,9 @@
 
         @if (Auth::user()->id_level == 1 || Auth::user()->id_level == 2)
         <small class="px-3 text-secondary">Transaksi</small>
-        
+        @if (Auth::user()->id_level == 2)
+        <a href="{{ route('operator.customers.index') }}">Data Pelanggan</a>
+        @endif
         <a href="{{ route('orders.index') }}">Orders Baru</a>
         <a href="{{ route('pickups.index') }}">Pengambilan</a>
         @endif
