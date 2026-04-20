@@ -25,9 +25,9 @@
         @endif
 
 
-        @if (Auth::user()->id_level == 2)
+        @if (Auth::user()->id_level == 1 || Auth::user()->id_level == 2)
         <small class="px-3 text-secondary">Transaksi</small>
-        <a href="{{ route('operator.customers.index') }}">Data Pelanggan</a>
+        
         <a href="{{ route('orders.index') }}">Orders Baru</a>
         <a href="{{ route('pickups.index') }}">Pengambilan</a>
         @endif

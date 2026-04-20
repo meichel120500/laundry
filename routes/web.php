@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('customers', CustomerController::class);
         Route::resource('services', TypeOfServiceController::class);
         Route::resource('vouchers', \App\Http\Controllers\VoucherController::class);
+
     });
 
    
